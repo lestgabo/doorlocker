@@ -77,17 +77,17 @@ var ledPin = 17;
 var locked = true
 
 // Setup servo
-var GPIO = require('pigpio').GPIO,
-	motor = new GPIO(motorPin, {mode: GPIO.OUTPUT}),
-	button = new GPIO(buttonPin, {
-        	mode: GPIO.INPUT, 
-		pullUpDown: GPIO.PUD_DOWN, 
-		edge: GPUIO.FALLING_EDGE
+var Gpio = require('pigpio').Gpio,
+	motor = new Gpio(motorPin, {mode: Gpio.OUTPUT}),
+	button = new Gpio(buttonPin, {
+        	mode: Gpio.INPUT, 
+		pullUpDown: Gpio.PUD_DOWN, 
+		edge: Gpio.FALLING_EDGE
 	}),
-	led = new GPIO(ledPin, {mode: GPIO.OUTPUT});
+	led = new Gpio(ledPin, {mode: Gpio.OUTPUT});
 
 console.log("locking door")
-lockdoor()
+lockDoor()
 
 button.on('interrupt', function(level) {
 	console.log("level: " + level + "locked: " + locked)
