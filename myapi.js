@@ -74,7 +74,7 @@ var ledPin = 17;
 
 // *** Start code ** //
 
-var locked = True;
+var locked = true
 
 // Setup servo
 var GPIO = require('pigpio').GPIO,
@@ -117,41 +117,6 @@ function unlockDoor() {
 	// After 1.5 seconds, the door lock servo turns off to avoid stall current
 	setTimeout(function(){motor.servoWrite(0)}, 1500)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
