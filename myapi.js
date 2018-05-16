@@ -31,6 +31,119 @@ app.use(function(err, req, res, next) {
 app.listen(3000);
 console.log('App Server running at port 3000');
 
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+
+// trying this code https://github.com/HackerShackOfficial/Smartphone-Doorlock/blob/master/doorlock.js
+
+
+//*** SMARTPHONE DOORLOCK ***//
+
+// ************* PARAMETERS *************** //
+// 
+// Parameters: unlockedState and lockedState
+// These parameters are in microseconds.
+// The servo pulse determines the degree 
+// at which the horn is positioned. In our
+// case, we get about 100 degrees of rotation
+// from 1ms-2.2ms pulse width. You will need
+// to play with these settings to get it to
+// work properly with your door lock
+//
+// Parameters: motorPin
+// The GPIO pin the signal wire on your servo
+// is connected to
+//
+// Parameters: buttonPin
+// The GPIO pin the signal wire on your button
+// is connected to. It is okay to have no button connected
+//
+// Parameters: ledPin
+// The GPIO pin the signal wire on your led
+// is connected to. It is okay to have no ledconnected
+//
+// not gonna use Blynk
+//
+// **************************************** //
+var unlockedState = 1000;
+var lockedState = 2200;
+
+var motorPin = 3;
+var buttonPin = 4;
+var ledPin = 17;
+
+// *** Start code ** //
+
+var locked = True;
+
+// Setup servo
+var GPIO = require('pigpio').GPIO,
+	motor = new GPIO(motorPin, {mode: GPIO.OUTPUT}),
+	button = new GPIO(buttonPin, {
+        	mode: GPIO.INPUT, 
+		pullUpDown: GPIO.PUD_DOWN, 
+		edge: GPUIO.FALLING_EDGE
+	}),
+	led = new GPIO(ledPin, {mode: GPIO.OUTPUT});
+
+console.log("locking door")
+lockdoor()
+
+button.on('interrupt', function(level) {
+	console.log("level: " + level + "locked: " + locked)
+	if (level == 0) {
+		if (locked) {
+			unlockDoor()
+		} else {
+			lockDoor()
+		}
+	}
+});
+
+function lockDoor() {
+	motor.servoWrite(lockedState);
+	led.digitalWrite(1);
+	locked = true
+
+	// After 1.5 seconds, the door lock servo turns off to avoid stall current
+	setTimeout(function(){motor.servoWrite(0)}, 1500)	
+}
+
+function unlockDoor() {
+	motor.servoWrite(unlockedState);
+	led.digitalWrite(0);
+	locked = false
+
+	// After 1.5 seconds, the door lock servo turns off to avoid stall current
+	setTimeout(function(){motor.servoWrite(0)}, 1500)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
