@@ -70,8 +70,8 @@ console.log('App Server running at port 3000');
 // with the servo upside down - using the two sides paddle I locked the servo going 
 // counter-clockwise - currently sitting at 135 deg (4th quadrant) and 315 deg (4th quadrant)
 // and the servo locked counter-clockwise
-var unlockedState = 2000;
-var lockedState = 700;
+var unlockedState = 1750;
+var lockedState = 900;
 
 var motorPin = 3;
 var buttonPin = 4;
@@ -91,11 +91,11 @@ var Gpio = require('pigpio').Gpio,
 	}),
 	led = new Gpio(ledPin, {mode: Gpio.OUTPUT});
 
-console.log("locking door")
-lockDoor()
+console.log("unlocking door")
+unlockDoor()
 
-setTimeout(function(){unlockDoor()}, 2000)
-console.log("its been 2 seconds, unlocking door")
+setTimeout(function(){lockDoor()}, 2000)
+console.log("its been 2 seconds, locking door")
 
 
 button.on('interrupt', function(level) {
