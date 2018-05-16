@@ -65,7 +65,7 @@ console.log('App Server running at port 3000');
 // not gonna use Blynk
 //
 // **************************************** //
-var unlockedState = 1000;
+var unlockedState = 1300;
 var lockedState = 2200;
 
 var motorPin = 3;
@@ -88,6 +88,10 @@ var Gpio = require('pigpio').Gpio,
 
 console.log("locking door")
 lockDoor()
+
+setTimeout(function(){unlockDoor()}, 2000)
+console.log("its been 2 seconds, unlocking door")
+
 
 button.on('interrupt', function(level) {
 	console.log("level: " + level + "locked: " + locked)
