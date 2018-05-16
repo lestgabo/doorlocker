@@ -65,8 +65,13 @@ console.log('App Server running at port 3000');
 // not gonna use Blynk
 //
 // **************************************** //
-var unlockedState = 1300;
-var lockedState = 2200;
+
+// using servo - lofty ambition MG996R DIGI Hi TORQUE from alibaba
+// with the servo upside down - using the two sides paddle I locked the servo going 
+// counter-clockwise - currently sitting at 135 deg (4th quadrant) and 315 deg (4th quadrant)
+// and the servo locked counter-clockwise
+var unlockedState = 2000;
+var lockedState = 700;
 
 var motorPin = 3;
 var buttonPin = 4;
