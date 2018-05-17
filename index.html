@@ -1,13 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>My Express API server example</title>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="myclient.js"></script>
-  </head>
-  <body>
-    <H1>My Express API server example</H1>
-    <div id="input"></div>
-  </body>
+<html>
+<head>
+	<title>Gabo Door Locker</title>
+	<link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.css' />
+</head>
+<body>
+<!--  	<H1>My Express API server example</H1>
+	<div id="input"></div>
+-->
+	<div class='container'>
+		<div class='jumbotron'>
+			<h1 class='text-center'>Gabo Door Locker</h1>
+		</div>
+		<div class='panel panel-default'>
+			<div class='panel-heading text-center'>Should be two buttons. Lock Button and Unlock Button.</div>
+			<div class='row panel-body'>
+				<div class='col-md-4 col-md-offset-4'>
+					<button  id='lock' class='btn btn-danger btn-lg btn-block'>LOCK</button>
+				</div>
+			</div>
+			<div class='row panel-body'>
+				<div class='col-md-4 col-md-offset-4'>
+					<button  id='unlock' class='btn btn-danger btn-lg btn-block'>UNLOCK</button>
+				</div>
+			</div>
+		</div> <!-- end of panel panel-default -->
+	</div> <!-- end of container -->
+	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="myclient.js"></script>
+</body>
 </html>
