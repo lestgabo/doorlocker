@@ -71,7 +71,7 @@ console.log('App Server running at port 3000');
 // counter-clockwise - currently sitting at 135 deg (4th quadrant) and 315 deg (4th quadrant)
 // and the servo locked counter-clockwise
 var unlockedState = 1750;
-var lockedState = 900;
+var lockedState = 750;
 
 var motorPin = 3;
 var buttonPin = 4;
