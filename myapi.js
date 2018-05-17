@@ -4,9 +4,8 @@ var express = require('express');
 var app = express();
 var joinPath = require('join-path');
 
-app.use(express['static'](__dirname ));
-app.use(express.static(__dirname ));
 app.use(express.static(joinPath(__dirname, 'bower_components')));
+app.use(express.static(__dirname ));
 
 // Express route for any other unrecognised incoming requests
 app.get('*', function(req, res) {
@@ -22,8 +21,10 @@ app.use(function(err, req, res, next) {
   }
 });
 	
-app.listen(3000);
-console.log('App Server running at port 3000');
+var PORT = process.env.PORT || 3000;
+app.listen(PORT, function() {
+	console.log('App Server listening on ' + PORT);
+});
 
 /*
 *********************************************************************
@@ -36,7 +37,7 @@ app.get('/lock', function(req, res) {
 });
 
 app.get('/unlock', function(req, res) {
-	unlockDoor()
+	unlockDoor();
 	console.log("Unlocking door")	
 });
 
