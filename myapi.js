@@ -2,9 +2,7 @@
 var http = require('http');
 var express = require('express');
 var app = express();
-var joinPath = require('join-path');
 
-app.use(express.static(joinPath(__dirname, 'bower_components')));
 app.use(express.static(__dirname ));
 
 // Express route for any other unrecognised incoming requests
