@@ -1,18 +1,12 @@
 
 var http = require('http');
 var express = require('express');
-
 var app = express();
-
-var inputs = [{ pin: '11', gpio: '17', value: 1},
-              { pin: '12', gpio: '18', value: 0}];
+var joinPath = require('join-path');
 
 app.use(express['static'](__dirname ));
-
-// Express route for incoming requests for a customer name
-app.get('/inputs/:id', function(req, res) {
-  res.status(200).send(inputs[req.params.id]);
-});
+app.use(express.static(__dirname ));
+app.use(express.static(joinPath(__dirname, 'bower_components')));
 
 // Express route for any other unrecognised incoming requests
 app.get('*', function(req, res) {
@@ -27,6 +21,25 @@ app.use(function(err, req, res, next) {
     next(err);
   }
 });
+	
+
+/*
+*********************************************************************
+	Routes - for GET requests
+*********************************************************************
+ */
+app.get('/lock', function(req, res) {
+	lockDoor();
+	console.log("Locking door")	
+});
+
+app.get('/unlock', function(req, res) {
+	unlockDoor()
+	console.log("Unlocking door")	
+});
+
+
+
 
 app.listen(3000);
 console.log('App Server running at port 3000');
@@ -120,30 +133,6 @@ function unlockDoor() {
 	// After 1.5 seconds, the door lock servo turns off to avoid stall current
 	setTimeout(function(){motor.servoWrite(0)}, 1500)
 }
-
-
-
-/*
-*********************************************************************
-	Routes - for GET requests
-*********************************************************************
- */
-console.log("unlocking door")
-
-
-setTimeout(function(){}, 2000)
-console.log("its been 2 seconds, locking door")
-
-
-app.get('/lock', function(req, res) {
-	lockDoor();
-	console.log("Locking door")	
-});
-
-app.get('/unlock', function(req, res) {
-	unlockDoor()
-	console.log("Unlocking door")	
-});
 
 
 
