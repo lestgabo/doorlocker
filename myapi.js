@@ -22,6 +22,8 @@ app.use(function(err, req, res, next) {
   }
 });
 	
+app.listen(3000);
+console.log('App Server running at port 3000');
 
 /*
 *********************************************************************
@@ -38,11 +40,6 @@ app.get('/unlock', function(req, res) {
 	console.log("Unlocking door")	
 });
 
-
-
-
-app.listen(3000);
-console.log('App Server running at port 3000');
 
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
