@@ -4,11 +4,12 @@ var express = require('express');
 var app = express();
 
 app.use(express.static(__dirname ));
-
+/*
 // Express route for any other unrecognised incoming requests
 app.get('*', function(req, res) {
   res.status(404).send('Unrecognised API call');
 });
+
 
 // Express route to handle errors
 app.use(function(err, req, res, next) {
@@ -18,7 +19,7 @@ app.use(function(err, req, res, next) {
     next(err);
   }
 });
-	
+	*/
 var PORT = process.env.PORT || 3000;
 app.listen(PORT, function() {
 	console.log('App Server listening on ' + PORT);
@@ -31,12 +32,14 @@ app.listen(PORT, function() {
  */
 app.get('/lock', function(req, res) {
 	lockDoor();
-	console.log("Locking door")	
+	console.log("Locking door");
+	res.send("Successfully locked door.");	
 });
 
 app.get('/unlock', function(req, res) {
 	unlockDoor();
-	console.log("Unlocking door")	
+	console.log("Unlocking door");
+	res.send("Unlocked door.");	
 });
 
 
