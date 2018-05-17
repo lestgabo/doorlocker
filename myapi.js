@@ -91,12 +91,6 @@ var Gpio = require('pigpio').Gpio,
 	}),
 	led = new Gpio(ledPin, {mode: Gpio.OUTPUT});
 
-console.log("unlocking door")
-unlockDoor()
-
-setTimeout(function(){lockDoor()}, 2000)
-console.log("its been 2 seconds, locking door")
-
 
 button.on('interrupt', function(level) {
 	console.log("level: " + level + "locked: " + locked)
@@ -126,6 +120,42 @@ function unlockDoor() {
 	// After 1.5 seconds, the door lock servo turns off to avoid stall current
 	setTimeout(function(){motor.servoWrite(0)}, 1500)
 }
+
+
+
+/*
+*********************************************************************
+	Routes - for GET requests
+*********************************************************************
+ */
+console.log("unlocking door")
+
+
+setTimeout(function(){}, 2000)
+console.log("its been 2 seconds, locking door")
+
+
+app.get('/lock', function(req, res) {
+	lockDoor();
+	console.log("Locking door")	
+});
+
+app.get('/unlock', function(req, res) {
+	unlockDoor()
+	console.log("Unlocking door")	
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
