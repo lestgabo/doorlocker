@@ -23,7 +23,7 @@ const oidc = new ExpressOIDC({
 	issuer: 'https://dev-840831.oktapreview.com/oauth2/default',
 	client_id: '0oaf33db3y3dc16KM0h7',
 	client_secret: 'xyyfAUYLLxopiSJ_vilQnsDnVfjnO7HpKsfXQcwX',
-	redirect_uri: 'localhost:3000/authorization-code/callback',
+	redirect_uri: 'http://localhost:3000/lock',
 	scope: 'openid profile'
 });
 
