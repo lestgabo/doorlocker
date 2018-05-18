@@ -1,46 +1,8 @@
-
 var http = require('http');
 var express = require('express');
 var app = express();
 
 app.use(express.static(__dirname ));
-/*
-// Express route for any other unrecognised incoming requests
-app.get('*', function(req, res) {
-  res.status(404).send('Unrecognised API call');
-});
-
-
-// Express route to handle errors
-app.use(function(err, req, res, next) {
-  if (req.xhr) {
-    res.status(500).send('Oops, Something went wrong!');
-  } else {
-    next(err);
-  }
-});
-	*/
-var PORT = process.env.PORT || 3000;
-app.listen(PORT, function() {
-	console.log('App Server listening on ' + PORT);
-});
-
-/*
-*********************************************************************
-	Routes - for GET requests
-*********************************************************************
- */
-app.get('/lock', function(req, res) {
-	lockDoor();
-	console.log("Locking door");
-	res.send("Successfully locked door.");	
-});
-
-app.get('/unlock', function(req, res) {
-	unlockDoor();
-	console.log("Unlocking door");
-	res.send("Unlocked door.");	
-});
 
 /*
 *********************************************************************
@@ -58,26 +20,76 @@ app.use(session({
 }));
 
 const oidc = new ExpressOIDC({
-	issuer: 'https://{https://dev-840831.oktapreview.com/oauth2/default',
-	client_id: '0oaf33dtbfTHOmwv80h7'
-	client_secret: '92aqTw6g6z5ISAjeqhna0c-Kw9lYhq48cnL4mMlh',
-	redirect_uri: 'http://localhost:3000/authorization-code/callback',
+	issuer: 'https://dev-840831.oktapreview.com/oauth2/default',
+	client_id: '0oaf33db3y3dc16KM0h7',
+	client_secret: 'xyyfAUYLLxopiSJ_vilQnsDnVfjnO7HpKsfXQcwX',
+	redirect_uri: 'localhost:3000/authorization-code/callback',
 	scope: 'openid profile'
 });
 
-// ExpressOIDC will attach handlers for the /Login and /authorization-code/callbackroutes
+// ExpressOIDC will attach handlers for the /Login and /authorization-code/callback routes
 app.use(oidc.router);
-
-app.get('/protected', oidc.ensureAuthenticated(), (req, res) => {
-	res.send(JSON.stringify(req.userinfo));
-});
-
 app.get('/', (req, res) => {
 	if (req.userinfo) {
-		res.send('Hi ${req.userinfo.name}!');
+		res.send(`Hello ${req.userinfo.name}! <a href="logout">Logout</a>`);
 	} else {
-		res.send('Hi!');
+		res.send('Please <a href="/login">login</a>');
 	}	
+});
+app.get('/protected', oidc.ensureAuthenticated(), (req, res) => {
+	res.send('Top Secret');
+});
+app.get('/logout', (req, res) => {
+	req.logout();
+	res.redirect('/');
+});
+oidc.on('ready', () => {
+	app.listen(3000, () => console.log('Started!'));
+});
+
+oidc.on('error', err => {
+	console.log('Unable to configure ExpressOIDC', err);
+});
+
+/*
+*********************************************************************
+	Routes - for express
+*********************************************************************
+ */
+
+/*
+// Express route for any other unrecognised incoming requests
+app.get('*', function(req, res) {
+  res.status(404).send('Unrecognised API call');
+});
+// Express route to handle errors
+app.use(function(err, req, res, next) {
+  if (req.xhr) {
+    res.status(500).send('Oops, Something went wrong!');
+  } else {
+    next(err);
+  }
+});
+var PORT = process.env.PORT || 5000;
+app.listen(PORT, function() {
+	console.log('App Server listening on ' + PORT);
+});
+*/
+/*
+*********************************************************************
+	Routes - for AJAX GET requests
+*********************************************************************
+ */
+app.get('/lock', function(req, res) {
+	lockDoor();
+	console.log("Locking door");
+	res.send("Successfully locked door.");	
+});
+
+app.get('/unlock', function(req, res) {
+	unlockDoor();
+	console.log("Unlocking door");
+	res.send("Unlocked door.");	
 });
 
 /*
@@ -164,15 +176,6 @@ function unlockDoor() {
 	// After 1.5 seconds, the door lock servo turns off to avoid stall current
 	setTimeout(function(){motor.servoWrite(0)}, 1500)
 }
-
-
-
-
-
-
-
-
-
 
 
 
