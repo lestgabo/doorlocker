@@ -116,7 +116,7 @@ button.on('interrupt', function(level) {
 });
 
 function lockDoor() {
-	motor.servoWrite(lockedState);
+	motor.servoWrite(unlockedState);
 	led.digitalWrite(1);
 	locked = true
 
@@ -125,7 +125,7 @@ function lockDoor() {
 }
 
 function unlockDoor() {
-	motor.servoWrite(unlockedState);
+	motor.servoWrite(lockedState);
 	led.digitalWrite(0);
 	locked = false
 
