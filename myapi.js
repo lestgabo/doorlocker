@@ -42,17 +42,51 @@ app.get('/unlock', function(req, res) {
 	res.send("Unlocked door.");	
 });
 
+/*
+*********************************************************************
+	Okta - Authentication
+*********************************************************************
+ */
+const session = require('express-session');
+const { ExpressOIDC } = require('@okta/oidc-middleware');
 
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
+// session support is required to use ExpressOIDC
+app.use(session({
+	secret: 'this should  be secure',
+	resave: true,
+	saveUninitialized: false
+}));
 
+const oidc = new ExpressOIDC({
+	issuer: 'https://{https://dev-840831.oktapreview.com/oauth2/default',
+	client_id: '0oaf33dtbfTHOmwv80h7'
+	client_secret: '92aqTw6g6z5ISAjeqhna0c-Kw9lYhq48cnL4mMlh',
+	redirect_uri: 'http://localhost:3000/authorization-code/callback',
+	scope: 'openid profile'
+});
+
+// ExpressOIDC will attach handlers for the /Login and /authorization-code/callbackroutes
+app.use(oidc.router);
+
+app.get('/protected', oidc.ensureAuthenticated(), (req, res) => {
+	res.send(JSON.stringify(req.userinfo));
+});
+
+app.get('/', (req, res) => {
+	if (req.userinfo) {
+		res.send('Hi ${req.userinfo.name}!');
+	} else {
+		res.send('Hi!');
+	}	
+});
+
+/*
+*********************************************************************
+	Door lock code
+*********************************************************************
+*/
 // trying this code https://github.com/HackerShackOfficial/Smartphone-Doorlock/blob/master/doorlock.js
-
-
-//*** SMARTPHONE DOORLOCK ***//
-
-// ************* PARAMETERS *************** //
-// 
+//
 // Parameters: unlockedState and lockedState
 // These parameters are in microseconds.
 // The servo pulse determines the degree 
@@ -88,8 +122,6 @@ var lockedState = 750;
 var motorPin = 3;
 var buttonPin = 4;
 var ledPin = 17;
-
-// *** Start code ** //
 
 var locked = true
 

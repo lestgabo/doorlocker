@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@okta/oidc-middleware": "^0.1.2",
     "connect": "^3.6.6",
     "express": "^4.16.3",
     "pigpio": "^1.0.0"
