@@ -1,6 +1,7 @@
 var http = require('http');
 var express = require('express');
 var app = express();
+// CORS - the login button won't work because CORS blocks okta
 
 app.use(express.static(__dirname ));
 
@@ -92,12 +93,14 @@ app.get('/unlock', function(req, res) {
 	console.log("Unlocking door");
 	res.send("Unlocked door.");	
 });
-
+/*
 app.get('/login', function(req, res) {
 	console.log("okta authentication");
 	res.send("okta authentication");	
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 });
-
+*/
 /*
 *********************************************************************
 	Door lock code
