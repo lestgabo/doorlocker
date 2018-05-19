@@ -11,4 +11,11 @@ $(function() {
 		});
 	});
 
+	$('#get-login').on('click', function() {
+		$.ajax({
+			url: '/login'
+		});
+	});
+
+
 });

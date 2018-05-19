@@ -51,6 +51,7 @@ oidc.on('error', err => {
 	console.log('Unable to configure ExpressOIDC', err);
 });
 
+
 /*
 *********************************************************************
 	Routes - for express
@@ -90,6 +91,11 @@ app.get('/unlock', function(req, res) {
 	unlockDoor();
 	console.log("Unlocking door");
 	res.send("Unlocked door.");	
+});
+
+app.get('/login', function(req, res) {
+	console.log("okta authentication");
+	res.send("okta authentication");	
 });
 
 /*
