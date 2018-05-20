@@ -4,7 +4,9 @@ const session = require('express-session');
 const { ExpressOIDC } = require('@okta/oidc-middleware');
 
 var app = express()
-app.use(express.static(__dirname ))
+
+//var path = require('path');
+
 // session support is required to use ExpressOIDC
 app.use(session({
 	secret: 'this should  be secure',
@@ -16,12 +18,15 @@ const oidc = new ExpressOIDC({
 	issuer: 'https://dev-840831.oktapreview.com/oauth2/default',
 	client_id: '0oaf33db3y3dc16KM0h7',
 	client_secret: 'xyyfAUYLLxopiSJ_vilQnsDnVfjnO7HpKsfXQcwX',
-	redirect_uri: 'http://localhost:3000/lock',
+	redirect_uri: 'http://192.168.2.102:3000/authorization-code/callback',
 	scope: 'openid profile'
 });
 
+app.use(express.static(__dirname));
 app.use(oidc.router);
 
+
+/*
 app.get('/', (req, res) => {
 	if (req.userinfo) {
 		res.send(`Hello ${req.userinfo.name}! <a href="logout">Logout</a>`);
@@ -37,12 +42,12 @@ app.get('/logout', (req, res) => {
 	req.logout();
 	res.redirect('/');
 });
-
+*/
 oidc.on('error', err => {
 	console.log('Unable to configure ExpressOIDC', err);
 });
 
-
+app.use(oidc.ensureAuthenticated());
 oidc.on('ready', () => {
 	app.listen(3000, () => console.log('Started!'));
 });
@@ -78,22 +83,28 @@ app.listen(PORT, function() {
 *********************************************************************
  */
 
-app.get('/lock', function(req, res) {
+app.get('/lock', oidc.ensureAuthenticated(), function(req, res) {
 	lockDoor();
 	console.log("Locking door");
-	res.send("Successfully locked door.");	
+	//res.send("Successfully locked door.");	
 });
 
-app.get('/unlock', function(req, res) {
+app.get('/unlock',oidc.ensureAuthenticated(), function(req, res) {
 	unlockDoor();
 	console.log("Unlocking door");
-	res.send("Unlocked door.");	
+	//res.send("Unlocked door.");	
+});
+/*
+//app.get('/doorlocker',oidc.ensureAuthenticated({ redirectTo: 'http://localhost:3000'}), function(req, res) {
+//app.get('/login',oidc.ensureAuthenticated({ redirectTo: '/'}), function(req, res) {
+app.get('/login',oidc.ensureAuthenticated({ redirectTo: '/'}), function(req, res) {
+	res.sendFile('doorlocker.html', {root : __dirname}, {title: 'DOORLOCKER'});
 });
 
-app.get('/doorlocker', oidc.ensureAuthenticated(), function(req, res) {
-	console.log("Top Secret");
-	res.send("Top Secret");	
+app.get('/doorlocker', oidc.ensureAuthenticated({ redirectTo: '/'}), function(req, res) {
+	res.sendFile('doorlocker.html', {root : __dirname}, {title: 'DOORLOCKER'});
 });
+*/
 
 /*
 *********************************************************************
@@ -131,8 +142,8 @@ app.get('/doorlocker', oidc.ensureAuthenticated(), function(req, res) {
 // with the servo upside down - using the two sides paddle I locked the servo going 
 // counter-clockwise - currently sitting at 135 deg (4th quadrant) and 315 deg (4th quadrant)
 
-var unlockedState = 1750;
-var lockedState = 750;
+var lockedState = 1750;
+var unlockedState = 750;
 
 var motorPin = 3;
 var buttonPin = 4;
