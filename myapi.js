@@ -1,18 +1,10 @@
-var http = require('http');
-var express = require('express');
-var app = express();
-// CORS - the login button won't work because CORS blocks okta
-
-app.use(express.static(__dirname ));
-
-/*
-*********************************************************************
-	Okta - Authentication
-*********************************************************************
- */
+var http = require('http')
+var express = require('express')
 const session = require('express-session');
 const { ExpressOIDC } = require('@okta/oidc-middleware');
 
+var app = express()
+app.use(express.static(__dirname ))
 // session support is required to use ExpressOIDC
 app.use(session({
 	secret: 'this should  be secure',
@@ -28,8 +20,8 @@ const oidc = new ExpressOIDC({
 	scope: 'openid profile'
 });
 
-// ExpressOIDC will attach handlers for the /Login and /authorization-code/callback routes
 app.use(oidc.router);
+
 app.get('/', (req, res) => {
 	if (req.userinfo) {
 		res.send(`Hello ${req.userinfo.name}! <a href="logout">Logout</a>`);
@@ -40,18 +32,20 @@ app.get('/', (req, res) => {
 app.get('/protected', oidc.ensureAuthenticated(), (req, res) => {
 	res.send('Top Secret');
 });
+
 app.get('/logout', (req, res) => {
 	req.logout();
 	res.redirect('/');
-});
-oidc.on('ready', () => {
-	app.listen(3000, () => console.log('Started!'));
 });
 
 oidc.on('error', err => {
 	console.log('Unable to configure ExpressOIDC', err);
 });
 
+
+oidc.on('ready', () => {
+	app.listen(3000, () => console.log('Started!'));
+});
 
 /*
 *********************************************************************
@@ -77,11 +71,13 @@ app.listen(PORT, function() {
 	console.log('App Server listening on ' + PORT);
 });
 */
+
 /*
 *********************************************************************
 	Routes - for AJAX GET requests
 *********************************************************************
  */
+
 app.get('/lock', function(req, res) {
 	lockDoor();
 	console.log("Locking door");
@@ -93,14 +89,12 @@ app.get('/unlock', function(req, res) {
 	console.log("Unlocking door");
 	res.send("Unlocked door.");	
 });
-/*
-app.get('/login', function(req, res) {
-	console.log("okta authentication");
-	res.send("okta authentication");	
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+app.get('/doorlocker', oidc.ensureAuthenticated(), function(req, res) {
+	console.log("Top Secret");
+	res.send("Top Secret");	
 });
-*/
+
 /*
 *********************************************************************
 	Door lock code
