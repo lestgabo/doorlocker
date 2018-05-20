@@ -175,20 +175,20 @@ button.on('interrupt', function(level) {
 
 function lockDoor() {
 	motor.servoWrite(unlockedState);
-	led.digitalWrite(1);
+	led.digitalWrite(0);
 	locked = true
 
-	// After 1.5 seconds, the door lock servo turns off to avoid stall current
-	setTimeout(function(){motor.servoWrite(0)}, 1500)	
+	// After 0.5 seconds, the door lock servo turns off to avoid stall current
+	setTimeout(function(){motor.servoWrite(0)}, 500)	
 }
 
 function unlockDoor() {
 	motor.servoWrite(lockedState);
-	led.digitalWrite(0);
+	led.digitalWrite(1);
 	locked = false
 
-	// After 1.5 seconds, the door lock servo turns off to avoid stall current
-	setTimeout(function(){motor.servoWrite(0)}, 1500)
+	// After 0.5 seconds, the door lock servo turns off to avoid stall current
+	setTimeout(function(){motor.servoWrite(0)}, 500)
 }
 
 

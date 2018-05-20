@@ -19,4 +19,12 @@ One of the most useful reasons for providing your Raspberry Pi with a REST API i
 - add button and LED (DONE)
 - Add login authentication on web app (DONE)
 	- using okta from npm install for login authentication (DONE)
-	- REMEMBER TO CHANGE client_id and client secret when in production
+	- REMEMBER TO CHANGE client_id and client secret when in production (DONE)
+
+- Installed PM2 to auto start myapi.js (DONE) 
+- Post Mortem
+	- keep it simple stupid (KISS)
+	- hands are still shaky when soldering
+	- used okta login because of recommendation from brother
+	- solved issues quickly when actually thought about issue logically
+		- e.g. okta get request has oidc.ensureAuthenticated() to make sure that user is authorized. So I had a new page /doorlocker with oidc.ensureAuthenticated() and the login button links there. BUT it just sent me into an infinite redirect loop because when using oidc.ensureAuthenticated() if not logged in then it redirects to /login. Scrapped the whole new page and just linked the button to /login which comes with the okta package.
