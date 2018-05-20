@@ -17,6 +17,6 @@ One of the most useful reasons for providing your Raspberry Pi with a REST API i
   - connect the Raspberri Pi with the servo (DONE)
 - Test functionality (DONE)
 - add button and LED (DONE)
-- Add login authentication on web app
-	- using okta from npm install for login authentication
+- Add login authentication on web app (DONE)
+	- using okta from npm install for login authentication (DONE)
 	- REMEMBER TO CHANGE client_id and client secret when in production
