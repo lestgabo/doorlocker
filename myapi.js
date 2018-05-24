@@ -17,8 +17,8 @@ app.use(session({
 const oidc = new ExpressOIDC({
 	issuer: 'https://dev-840831.oktapreview.com/oauth2/default',
 	client_id: '0oaf33db3y3dc16KM0h7',
-	client_secret: 'xyyfAUYLLxopiSJ_vilQnsDnVfjnO7HpKsfXQcwX',
-	redirect_uri: 'http://192.168.2.102:3000/authorization-code/callback',
+	client_secret: 'fmwXw9uU23-uWWg3a9rnomRs-OW_DhHiP7yzihTn',
+	redirect_uri: 'http://192.168.2.165:3000/authorization-code/callback',
 	scope: 'openid profile'
 });
 
@@ -142,8 +142,8 @@ app.get('/doorlocker', oidc.ensureAuthenticated({ redirectTo: '/'}), function(re
 // with the servo upside down - using the two sides paddle I locked the servo going 
 // counter-clockwise - currently sitting at 135 deg (4th quadrant) and 315 deg (4th quadrant)
 
-var lockedState = 1750;
-var unlockedState = 750;
+var lockedState = 750;
+var unlockedState = 1750;
 
 var motorPin = 3;
 var buttonPin = 4;
@@ -174,21 +174,20 @@ button.on('interrupt', function(level) {
 });
 
 function lockDoor() {
-	motor.servoWrite(unlockedState);
+	motor.servoWrite(lockedState);
 	led.digitalWrite(0);
 	locked = true
 
-	// After 0.5 seconds, the door lock servo turns off to avoid stall current
-	setTimeout(function(){motor.servoWrite(0)}, 500)	
+	// After 2 seconds, the door lock servo turns off to avoid stall current
+	setTimeout(function(){motor.servoWrite(0)}, 2000)	
 }
 
 function unlockDoor() {
-	motor.servoWrite(lockedState);
+	motor.servoWrite(unlockedState);
 	led.digitalWrite(1);
 	locked = false
 
-	// After 0.5 seconds, the door lock servo turns off to avoid stall current
-	setTimeout(function(){motor.servoWrite(0)}, 500)
+	setTimeout(function(){lockDoor()}, 15000)
 }
 
 
