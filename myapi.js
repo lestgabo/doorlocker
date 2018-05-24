@@ -3,9 +3,10 @@ var express = require('express')
 const session = require('express-session');
 const { ExpressOIDC } = require('@okta/oidc-middleware');
 
-var app = express()
+// dotenv, module to load environment variables
+require('dotenv').config()
 
-//var path = require('path');
+var app = express()
 
 // session support is required to use ExpressOIDC
 app.use(session({
@@ -16,8 +17,8 @@ app.use(session({
 
 const oidc = new ExpressOIDC({
 	issuer: 'https://dev-840831.oktapreview.com/oauth2/default',
-	client_id: '0oaf33db3y3dc16KM0h7',
-	client_secret: 'fmwXw9uU23-uWWg3a9rnomRs-OW_DhHiP7yzihTn',
+	client_id: process.env.CLIENT_ID_ENV,
+	client_secret: process.env.CLIENT_SECRET_ENV,
 	redirect_uri: 'http://192.168.2.165:3000/authorization-code/callback',
 	scope: 'openid profile'
 });
@@ -25,24 +26,6 @@ const oidc = new ExpressOIDC({
 app.use(express.static(__dirname));
 app.use(oidc.router);
 
-
-/*
-app.get('/', (req, res) => {
-	if (req.userinfo) {
-		res.send(`Hello ${req.userinfo.name}! <a href="logout">Logout</a>`);
-	} else {
-		res.send('Please <a href="/login">login</a>');
-	}	
-});
-app.get('/protected', oidc.ensureAuthenticated(), (req, res) => {
-	res.send('Top Secret');
-});
-
-app.get('/logout', (req, res) => {
-	req.logout();
-	res.redirect('/');
-});
-*/
 oidc.on('error', err => {
 	console.log('Unable to configure ExpressOIDC', err);
 });
@@ -52,30 +35,6 @@ oidc.on('ready', () => {
 	app.listen(3000, () => console.log('Started!'));
 });
 
-/*
-*********************************************************************
-	Routes - for express
-*********************************************************************
- */
-
-/*
-// Express route for any other unrecognised incoming requests
-app.get('*', function(req, res) {
-  res.status(404).send('Unrecognised API call');
-});
-// Express route to handle errors
-app.use(function(err, req, res, next) {
-  if (req.xhr) {
-    res.status(500).send('Oops, Something went wrong!');
-  } else {
-    next(err);
-  }
-});
-var PORT = process.env.PORT || 5000;
-app.listen(PORT, function() {
-	console.log('App Server listening on ' + PORT);
-});
-*/
 
 /*
 *********************************************************************
@@ -94,17 +53,7 @@ app.get('/unlock',oidc.ensureAuthenticated(), function(req, res) {
 	console.log("Unlocking door");
 	//res.send("Unlocked door.");	
 });
-/*
-//app.get('/doorlocker',oidc.ensureAuthenticated({ redirectTo: 'http://localhost:3000'}), function(req, res) {
-//app.get('/login',oidc.ensureAuthenticated({ redirectTo: '/'}), function(req, res) {
-app.get('/login',oidc.ensureAuthenticated({ redirectTo: '/'}), function(req, res) {
-	res.sendFile('doorlocker.html', {root : __dirname}, {title: 'DOORLOCKER'});
-});
 
-app.get('/doorlocker', oidc.ensureAuthenticated({ redirectTo: '/'}), function(req, res) {
-	res.sendFile('doorlocker.html', {root : __dirname}, {title: 'DOORLOCKER'});
-});
-*/
 
 /*
 *********************************************************************
