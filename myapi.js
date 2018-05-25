@@ -112,7 +112,7 @@ var Gpio = require('pigpio').Gpio,
 
 
 button.on('interrupt', function(level) {
-	console.log("level: " + level + "locked: " + locked)
+	console.log("level: " + level + "; locked: " + locked)
 	if (level == 0) {
 		if (locked) {
 			unlockDoor()
@@ -127,8 +127,8 @@ function lockDoor() {
 	led.digitalWrite(0);
 	locked = true
 
-	// After 2 seconds, the door lock servo turns off to avoid stall current
-	setTimeout(function(){motor.servoWrite(0)}, 2000)	
+	// After 1 second, the door lock servo turns off to avoid stall current
+	setTimeout(function(){motor.servoWrite(0)}, 1000)	
 }
 
 function unlockDoor() {
@@ -136,7 +136,7 @@ function unlockDoor() {
 	led.digitalWrite(1);
 	locked = false
 
-	setTimeout(function(){lockDoor()}, 15000)
+	setTimeout(function(){lockDoor()}, 20000)
 }
 
 
