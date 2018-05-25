@@ -44,14 +44,12 @@ oidc.on('ready', () => {
 
 app.get('/lock', oidc.ensureAuthenticated(), function(req, res) {
 	lockDoor();
-	console.log("Locking door");
-	//res.send("Successfully locked door.");	
+	console.log("From web => Locking door");
 });
 
 app.get('/unlock',oidc.ensureAuthenticated(), function(req, res) {
 	unlockDoor();
-	console.log("Unlocking door");
-	//res.send("Unlocked door.");	
+	console.log("From web => Unlocking door");	
 });
 
 
@@ -110,9 +108,12 @@ var Gpio = require('pigpio').Gpio,
 	}),
 	led = new Gpio(ledPin, {mode: Gpio.OUTPUT});
 
+// want the door to be locked right after starting
+setTimeout(function(){lockDoor()}, 1000)
+
 
 button.on('interrupt', function(level) {
-	console.log("level: " + level + "; locked: " + locked)
+	console.log("From Button => level: " + level + "; locked: " + locked)
 	if (level == 0) {
 		if (locked) {
 			unlockDoor()
@@ -125,8 +126,9 @@ button.on('interrupt', function(level) {
 function lockDoor() {
 	motor.servoWrite(lockedState);
 	led.digitalWrite(0);
-	locked = true
+	locked = true;
 
+	console.log("DOOR LOCKED");
 	// After 1 second, the door lock servo turns off to avoid stall current
 	setTimeout(function(){motor.servoWrite(0)}, 1000)	
 }
@@ -134,7 +136,7 @@ function lockDoor() {
 function unlockDoor() {
 	motor.servoWrite(unlockedState);
 	led.digitalWrite(1);
-	locked = false
+	locked = false;
 
 	setTimeout(function(){lockDoor()}, 20000)
 }
