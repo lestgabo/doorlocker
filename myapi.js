@@ -89,8 +89,8 @@ app.get('/unlock',oidc.ensureAuthenticated(), function(req, res) {
 // with the servo upside down - using the two sides paddle I locked the servo going 
 // counter-clockwise - currently sitting at 135 deg (4th quadrant) and 315 deg (4th quadrant)
 
-var lockedState = 750;
-var unlockedState = 1750;
+var lockedState = 850;
+var unlockedState = 1900;
 
 var motorPin = 3;
 var buttonPin = 4;
@@ -129,8 +129,8 @@ function lockDoor() {
 	locked = true;
 
 	console.log("DOOR LOCKED");
-	// After 1 second, the door lock servo turns off to avoid stall current
-	setTimeout(function(){motor.servoWrite(0)}, 1000)	
+	// After 1.5 seconds, the door lock servo turns off to avoid stall current
+	setTimeout(function(){motor.servoWrite(0)}, 1500)	
 }
 
 function unlockDoor() {
@@ -138,7 +138,7 @@ function unlockDoor() {
 	led.digitalWrite(1);
 	locked = false;
 
-	setTimeout(function(){lockDoor()}, 20000)
+	setTimeout(function(){lockDoor()}, 10000)
 }
 
 

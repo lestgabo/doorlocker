@@ -1,3 +1,6 @@
+// pagecreate added to stop mobile jQuery firing multiple times
+// https://www.gajotres.net/prevent-jquery-multiple-event-triggering/
+/*
 $(function() {
 	$('#get-lock').on('click', function() {
 		$.ajax({
@@ -10,12 +13,18 @@ $(function() {
 			url: '/unlock'
 		});
 	});
+});
 
-	$('#get-login').on('click', function() {
+*/
+$(document).on('pagebeforeshow', '#index', function() {
+	$(document).off('click', '#get-lock').on('click', '#get-lock', function(e) {
 		$.ajax({
-			url: '/login'
+			url: '/lock'
+		});
+	});	
+	$(document).off('click', '#get-unlock').on('click', '#get-unlock', function(e) {
+		$.ajax({
+			url: '/unlock'
 		});
 	});
-
-
 });
