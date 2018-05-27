@@ -45,13 +45,13 @@ oidc.on('ready', () => {
 app.get('/lock', oidc.ensureAuthenticated(), function(req, res) {
 	lockDoor();
 	console.log("From web => Locking door");
-	setTimeout(function(){logout()}, 20000);
+	setTimeout(function(){logout()}, 30000);
 });
 
 app.get('/unlock',oidc.ensureAuthenticated(), function(req, res) {
 	unlockDoor();
 	console.log("From web => Unlocking door");
-	setTimeout(function(){logout()}, 20000);	
+	setTimeout(function(){logout()}, 30000);	
 });
 
 app.get('/logout', (req, res) => {
@@ -143,7 +143,7 @@ function unlockDoor() {
 	led.digitalWrite(1);
 	locked = false;
 
-	setTimeout(function(){lockDoor()}, 10000)
+	setTimeout(function(){lockDoor()}, 20000)
 }
 
 

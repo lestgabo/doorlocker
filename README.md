@@ -38,4 +38,28 @@ One of the most useful reasons for providing your Raspberry Pi with a REST API i
 		- this is/was the reason for the door unlocking by itself after unlocking from my phone
 		- looking for a fix online, another easy fix is to just logout the Okta athentication after a minute. we'll see which one
 	- could not figure out how to fix the jQuery mobile firing again a couple of minutes after the first time
-	- I chose the logout route instead. WORKS!
+	- I chose the logout route instead. IT WORKS! Of course it does, but I really tried to go the jQuery route. It just wouldn't stop firing multiple times.
+
+- Resources
+	- https://bloggerbrothers.com/2017/03/04/controlling-servos-from-your-pi-no-extra-hardware-needed-using-nodejs/
+
+	- http://www.robert-drummond.com/2013/03/08/server-side-javascript-on-a-raspberry-pi-how-to-install-node-js/
+
+	- http://www.robert-drummond.com/2013/05/08/how-to-build-a-restful-web-api-on-a-raspberry-pi-in-javascript-2/
+
+	- http://thisdavej.com/beginners-guide-to-installing-node-js-on-a-raspberry-pi/
+
+	- https://github.com/HackerShackOfficial/Smartphone-Doorlock/blob/master/doorlock.js
+
+	- http://getbootstrap.com/docs/4.1/getting-started/download/
+
+	- https://stackoverflow.com/questions/7067966/how-to-allow-cors
+
+	- https://www.gajotres.net/prevent-jquery-multiple-event-triggering/
+
+
+
+
+
+
+
