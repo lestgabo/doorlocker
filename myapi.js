@@ -38,21 +38,26 @@ oidc.on('ready', () => {
 
 /*
 *********************************************************************
-	Routes - for AJAX GET requests
+	Routes - for GET requests
 *********************************************************************
  */
 
 app.get('/lock', oidc.ensureAuthenticated(), function(req, res) {
 	lockDoor();
 	console.log("From web => Locking door");
+	setTimeout(function(){logout()}, 20000);
 });
 
 app.get('/unlock',oidc.ensureAuthenticated(), function(req, res) {
 	unlockDoor();
-	console.log("From web => Unlocking door");	
+	console.log("From web => Unlocking door");
+	setTimeout(function(){logout()}, 20000);	
 });
 
-
+app.get('/logout', (req, res) => {
+	req.logout();
+	res.redirect('/');
+});
 /*
 *********************************************************************
 	Door lock code

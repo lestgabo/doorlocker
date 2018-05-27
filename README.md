@@ -31,8 +31,11 @@ One of the most useful reasons for providing your Raspberry Pi with a REST API i
 	- solved issues quickly when actually thought about issue logically
 		- e.g. okta get request has oidc.ensureAuthenticated() to make sure that user is authorized. So I had a new page /doorlocker with oidc.ensureAuthenticated() and the login button links there. BUT it just sent me into an infinite redirect loop because when using oidc.ensureAuthenticated() if not logged in then it redirects to /login. Scrapped the whole new page and just linked the button to /login which comes with the okta package.
 
+- Post Mortem 2
 - After feedback / actual use for a week
 	- increased time for auto-lock
 	- realized theres the issue of jQuery mobile firing multiple times
 		- this is/was the reason for the door unlocking by itself after unlocking from my phone
 		- looking for a fix online, another easy fix is to just logout the Okta athentication after a minute. we'll see which one
+	- could not figure out how to fix the jQuery mobile firing again a couple of minutes after the first time
+	- I chose the logout route instead. WORKS!
