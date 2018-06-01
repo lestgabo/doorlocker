@@ -114,11 +114,11 @@ var Gpio = require('pigpio').Gpio,
 	led = new Gpio(ledPin, {mode: Gpio.OUTPUT});
 
 // want the door to be locked right after starting
-setTimeout(function(){lockDoor()}, 1000)
+setTimeout(function(){lockDoor()}, 5000)
 
 
-button.on('interrupt', function(level) {
-	console.log("From Button => level: " + level + "; locked: " + locked)
+button.on('interrupt', function (level) {
+	console.log("level: " + level + " locked: " + locked)
 	if (level == 0) {
 		if (locked) {
 			unlockDoor()
@@ -142,8 +142,8 @@ function unlockDoor() {
 	motor.servoWrite(unlockedState);
 	led.digitalWrite(1);
 	locked = false;
-
-	setTimeout(function(){lockDoor()}, 20000)
+	console.log("DOOR UNLOCKED");	
+	setTimeout(function(){lockDoor()}, 15000)
 }
 
 
