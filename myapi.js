@@ -58,6 +58,82 @@ app.get('/logout', (req, res) => {
 	req.logout();
 	res.redirect('/');
 });
+
+/*
+*********************************************************************
+	raspi-serial - for RFID reader
+*********************************************************************
+ */
+/*
+const raspi = require('raspi').init;
+const Serial = require('raspi-serial').Serial;
+
+const portName = '/dev/ttyAMA0';
+
+raspi.init(() => {
+	var serial = new Serial(portName, {
+		baudRate: 9600
+	});
+	serial.open(() => {
+		serial.write('Hello from raspi-serial');
+    		serial.on('data', (data) => {
+			process.stdout.write(data);
+    		});
+	});
+});
+*/
+/*
+*********************************************************************
+	serialport - for RFID reader
+*********************************************************************
+*/
+/*
+var SerialPort = require('serialport');
+var port = new SerialPort('/dev/ttyS0', {
+	baudRate: 9600
+});
+hiddev0
+ttyS0
+ttyAMA0
+*/
+var SerialPort = require('serialport');
+var port = new SerialPort('/dev/ttyS0', {
+	baudRate: 9600
+});
+
+
+// port.on('open', showPortOpen);
+
+/*
+port.on('data', function (data) {
+	consol.log('Data: ' + data);
+});
+*/
+port.on('readable', function (data) {
+	consol.log('Data:' + port.read());
+});
+
+
+
+
+port.write('main screen turn on', function(err) {
+	if (err) {
+		return console.log('Error on write: ', err.message);
+	}
+	console.log('message written');
+});
+
+port.write('main screen turn on', function(err) {
+	if (err) {
+		return console.log('Error on write: ', err.message);
+	}
+	console.log('WE GOOD?');
+});
+
+function showPortOpen(){
+	console.log('port open. Data rate: ' + port.options.baudRate);
+}
+
 /*
 *********************************************************************
 	Door lock code
@@ -118,13 +194,18 @@ setTimeout(function(){lockDoor()}, 5000)
 
 
 button.on('interrupt', function (level) {
-	console.log("level: " + level + " locked: " + locked)
+	/*console.log("level: " + level + " locked: " + locked)
 	if (level == 0) {
 		if (locked) {
 			unlockDoor()
 		} else {
 			lockDoor()
 		}
+	} */
+	if (locked) {
+		unlockDoor()
+	} else {
+		lockDoor()
 	}
 });
 
@@ -134,8 +215,8 @@ function lockDoor() {
 	locked = true;
 
 	console.log("DOOR LOCKED");
-	// After 1.5 seconds, the door lock servo turns off to avoid stall current
-	setTimeout(function(){motor.servoWrite(0)}, 1500)	
+	// After 1 second, the door lock servo turns off to avoid stall current
+	setTimeout(function(){motor.servoWrite(0)}, 1000)	
 }
 
 function unlockDoor() {
@@ -143,7 +224,7 @@ function unlockDoor() {
 	led.digitalWrite(1);
 	locked = false;
 	console.log("DOOR UNLOCKED");	
-	setTimeout(function(){lockDoor()}, 15000)
+	setTimeout(function(){lockDoor()}, 20000)
 }
 
 
