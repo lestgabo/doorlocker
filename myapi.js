@@ -95,7 +95,7 @@ var port = new SerialPort('/dev/ttyS0', {
 hiddev0
 ttyS0
 ttyAMA0
-*/
+
 var SerialPort = require('serialport');
 var port = new SerialPort('/dev/ttyS0', {
 	baudRate: 9600
@@ -103,12 +103,12 @@ var port = new SerialPort('/dev/ttyS0', {
 
 
 // port.on('open', showPortOpen);
-
+*/
 /*
 port.on('data', function (data) {
 	consol.log('Data: ' + data);
 });
-*/
+
 port.on('readable', function (data) {
 	consol.log('Data:' + port.read());
 });
@@ -133,7 +133,7 @@ port.write('main screen turn on', function(err) {
 function showPortOpen(){
 	console.log('port open. Data rate: ' + port.options.baudRate);
 }
-
+*/
 /*
 *********************************************************************
 	Door lock code
@@ -170,8 +170,8 @@ function showPortOpen(){
 // with the servo upside down - using the two sides paddle I locked the servo going 
 // counter-clockwise - currently sitting at 135 deg (4th quadrant) and 315 deg (4th quadrant)
 
-var lockedState = 850;
-var unlockedState = 1900;
+var lockedState =850;
+var unlockedState = 2000;
 
 var motorPin = 3;
 var buttonPin = 4;
@@ -194,29 +194,26 @@ setTimeout(function(){lockDoor()}, 5000)
 
 
 button.on('interrupt', function (level) {
-	/*console.log("level: " + level + " locked: " + locked)
-	if (level == 0) {
+	// console.log("level: " + level + " locked: " + locked)
+	if (level === 0) {
+		console.log("Button Pressed")
 		if (locked) {
-			unlockDoor()
+			setTimeout(function(){unlockDoor()}, 200);
 		} else {
-			lockDoor()
+			setTimeout(function(){lockDoor()}, 200);
 		}
-	} */
-	if (locked) {
-		unlockDoor()
-	} else {
-		lockDoor()
-	}
+	} 
 });
 
 function lockDoor() {
 	motor.servoWrite(lockedState);
 	led.digitalWrite(0);
 	locked = true;
-
 	console.log("DOOR LOCKED");
-	// After 1 second, the door lock servo turns off to avoid stall current
-	setTimeout(function(){motor.servoWrite(0)}, 1000)	
+
+
+	// After 1.5 seconds, the door lock servo turns off to avoid stall current
+	setTimeout(function(){motor.servoWrite(0)}, 1500)	
 }
 
 function unlockDoor() {
@@ -224,7 +221,10 @@ function unlockDoor() {
 	led.digitalWrite(1);
 	locked = false;
 	console.log("DOOR UNLOCKED");	
-	setTimeout(function(){lockDoor()}, 20000)
+
+	// After 1.5 seconds, the door lock servo turns off to avoid stall current
+	setTimeout(function(){motor.servoWrite(0)}, 1500)
+	setTimeout(function(){lockDoor()}, 15000)
 }
 
 
